@@ -4,12 +4,12 @@ import clases.hibernate.Employees;
 
 public interface CRUD {
 
-	public void read(Employees DTO);
+	public Employees read(Employees ObjectDTO);
 
-	public void create(Employees DTO);
+	public Employees create(Employees ObjectDTO);
 	
-	public void update(Employees DTO);
+	public Employees update(Employees ObjectDTO);
 	
-	public void delete(Employees DTO);
+	public Employees delete(Employees ObjectDTO);
 	
 }

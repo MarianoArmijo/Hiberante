@@ -4,16 +4,16 @@ import org.hibernate.Session;
 
 public class SuperDAO {
 	
-	private static Session sesion;
+	private Session sesion = null;
 
-	public static Session getSession() {
+	public Session getSession() {
 		
 		return sesion;
 	}
 
-	public static void setSession(Session session) {
+	public void setSession(Session session) {
 		
 		sesion = session;
 	}
-	
+
 }
