@@ -174,7 +174,7 @@ public class Employees implements java.io.Serializable {
 
 	@Override
 	public String toString() {
-		return "Empleados [ Nombre: "+firstName+", Apellido: "+lastName+", Salario: "+salary+", IdDepartamento: "+departments.getDepartmentId()+"]";
+		return "Nombre: "+firstName+", Apellido: "+lastName+", Salario: "+salary;
 	}
 	
 }

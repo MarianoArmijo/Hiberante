@@ -1,5 +1,9 @@
 package hibernate.services;
 
+import hibernate.DAO.EmployeeDAO;
+import hibernate.DAO.SuperDAO;
+import hibernate.session.manager.SessionManager;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -21,10 +25,9 @@ public class EmployeesServices {
 		superdao = new SuperDAO();
 	}
 	
-	// Método que incrementa el salario de los empleados un 20%
-	public boolean incrementarSalario() {
-		
-		boolean inc = false;
+	/** Método que incrementa el salario de los empleados un 20%
+	 */
+	public List<Employees> incrementarSalario() {
 		
 		Session session = null;
 		Transaction transaction = null;
@@ -41,10 +44,9 @@ public class EmployeesServices {
 			
 			list = emp.obtenerTodosLosEmpleados();
 			
-			for(Employees employees : list){employees.setSalary(employees.getSalary().multiply(new BigDecimal(1.2)));}
+//			for(Employees employees : list){employees.setSalary(employees.getSalary().multiply(new BigDecimal(1.2)));}
 			
 			transaction.commit();
-			inc = true;
 		}
 		
 		catch (Exception e) {
@@ -58,13 +60,13 @@ public class EmployeesServices {
 			SessionManager.cerrarSession(session);
 		}
 		
-		return inc;
+		return list;
 	}
 	
-	// Método que lista los salarios más altos de cada departamento.
-	public boolean listarMayoresSalarios() {
-		
-		boolean sal = false;
+	/** 
+	 * Método que lista los salarios más altos de cada departamento.
+	 */
+	public List<Employees> listarMayoresSalarios() {
 		
 		Session session = null;
 		List<Employees> list = null;
@@ -78,9 +80,8 @@ public class EmployeesServices {
 			
 			list = empdao.obtenerListaSalariosMayores();
 			
-			for(Employees emp : list){System.out.println(emp.toString());}
+//			for(Employees emp : list){System.out.println(emp.toString());}
 			
-			sal = true;
 		}
 		
 		catch (Exception ex) {
@@ -95,13 +96,14 @@ public class EmployeesServices {
 		
 		log.info("Método listarMayoresSalarios terminado.");
 		
-		return sal;
+		return list;
 	}
 	
-	// Método que dado un id de empleado devuelve un Empleado.
+	/** 
+	 * Método que dado un id de empleado devuelve un Empleado.
+	 * @param EMPLOYEE_ID
+	 */
 		public List<Employees> recuperarListaEmployeesPorID(int EMPLOYEE_ID) {	
-			
-			List<Employees> id = null;
 			
 			Session session = null;
 			List<Employees> list = null;
@@ -114,7 +116,7 @@ public class EmployeesServices {
 				
 				list = emps_byid.obtenerEmpleadosPorID(EMPLOYEE_ID);
 				
-				for(Employees empds : list){System.out.println(empds.toString());}
+//				for(Employees empds : list){System.out.println(empds.toString());}
 				
 			}
 			
@@ -130,29 +132,29 @@ public class EmployeesServices {
 			
 			log.info("Método recuperarListaEmployeesPorID terminado.");
 			
-			return id;
+			return list;
 		}
 	
-	// Método que dado un departamento devuelve una lista de Empleados de ese departamento.
-	public boolean recuperarListaEmployeesPorDepartamento(int DEPARTMENT_ID) {	
-		
-		boolean id = false;
+	/** 
+	 * Método que dado un departamento devuelve una lista de Empleados de ese departamento.
+	 * @param DEPARTMENT_ID
+	 */
+	public List<Employees> recuperarListaEmployeesPorDepartamento(int DEPARTMENT_ID) {	
 		
 		Session session = null;
 		List<Employees> list = null;
 		EmployeeDAO emps_byid = null;
 		emps_byid = new EmployeeDAO(superdao);
 		
-		try{	
+		try{
 			
 			session = SessionManager.obtenerSesionNueva();
 			superdao.setSession(session);
 			
 			list = emps_byid.obtenerEmpleadosDepartamento(DEPARTMENT_ID);
 			
-			for(Employees empds : list){System.out.println(empds.toString());}
+//			for(Employees empds : list){System.out.println(empds.toString());}
 			
-			id = true;
 		}
 		
 		catch(Exception e){
@@ -167,8 +169,55 @@ public class EmployeesServices {
 		
 		log.info("Método recuperarListaEmployeesPorDepartamento terminado.");
 		
-		return id;
+		return list;
 	}
+	
+	/**
+	 * Método que dado un nombre de departamento devuelve el id de departamento.
+	 */
+	
+	public int recuperarIdDepartamento(String DEPARTMENT_NAME){
+		
+		Session session = null;
+		List list = null;
+		EmployeeDAO dep_id = null;
+		dep_id = new EmployeeDAO(superdao);
+		int DEPARTMENT_ID = 0;
+		
+		try {
+			
+			session = SessionManager.obtenerSesionNueva();
+			superdao.setSession(session);
+			
+			list = dep_id.obtenerDepartamento(DEPARTMENT_NAME);
+			
+			for(Object dep : list) {
+
+				BigDecimal bg = (BigDecimal) dep;
+				DEPARTMENT_ID = bg.intValue();
+
+			}
+		}
+		
+		catch(Exception e){
+			
+			e.printStackTrace();
+		}
+	
+		finally {
+			
+			SessionManager.cerrarSession(session);
+		}
+		
+		log.info("Método recuperarListaEmployeesPorDepartamento terminado.");
+		
+		return DEPARTMENT_ID;
+	}
+	
+
+	/**
+	 * Método que cierra el sessionFactory
+	 */
 	
 	public void cerrarSessionFactory() {
 		

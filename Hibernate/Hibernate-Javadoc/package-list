@@ -1,0 +1,7 @@
+clases.hibernate
+hibernate.DAO
+hibernate.consultas
+hibernate.interfaz
+hibernate.services
+hibernate.session.manager
+hibernate.test

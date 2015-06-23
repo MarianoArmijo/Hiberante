@@ -10,7 +10,7 @@ import java.util.Set;
  */
 public class Departments implements java.io.Serializable {
 
-	private short departmentId;
+	private int departmentId;
 	private Locations locations;
 	private Employees employees;
 	private String departmentName;
@@ -36,7 +36,7 @@ public class Departments implements java.io.Serializable {
 		this.employeeses = employeeses;
 	}
 
-	public short getDepartmentId() {
+	public int getDepartmentId() {
 		return this.departmentId;
 	}
 
